@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<label>This is your selected image:</label><br/>
+<input type="file" id="imageLoader" name="imageLoader"/>
+<canvas id="imageCanvas" width='300' height='227'></canvas>
+	<table>
+		<thead>
+			<tr>
+				<th>NTC</th>
+				<th width="300">Hovered color</th>
+				<th width="300">Selected color</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<canvas id="canvas" width="600" height="454"></canvas>
+				</td>
+				<td align="center" class="color-cell" id="hovered-color"></td>
+				<td align="center" class="color-cell" id="selected-color"></td>
+			</tr>
+		</tbody>
+	<table>
+    	<table>
+		<thead>
+			<tr>
+				<th>Your Sample</th>
+				<th width="300">Hovered color</th>
+				<th width="300">Selected color</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<canvas id="canvas1" width="600" height="454"></canvas>
+				</td>
+				<td align="center" class="color-cell" id="hovered-color1"></td>
+				<td align="center" class="color-cell" id="selected-color1"></td>
+			</tr>
+		</tbody>
+	<table>
+    	<table>
+		<thead>
+			<tr>
+				<th>Positive Control</th>
+				<th width="300">Hovered color</th>
+				<th width="300">Selected color</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>
+					<canvas id="canvas2" width="600" height="454"></canvas>
+				</td>
+				<td align="center" class="color-cell" id="hovered-color2"></td>
+				<td align="center" class="color-cell" id="selected-color2"></td>
+			</tr>
+		</tbody>
+	<table>
+		<input type="button" value="Calculate Test Samples" onclick="getResult()">
+		<p id="NTC">Your ntc G value is:</p>
+		<p id="sample">Your sample G value is:</p>
+		<p id="pcontrol">Your positive control G value is:</p>
+		<p id="result">Your result is:</p>
+</body>
+<script>
+function getcolor(imgID){
+	var img = new Image();
+	img.crossOrigin = 'anonymous';
+	img.src = imgID;
+	var canvas = document.getElementById('canvas');
+	var ctx = canvas.getContext('2d');
+	img.onload = function() {
+  	ctx.drawImage(img, 0, 0, img.width,    img.height,     // source rectangle
+                   0, 0, canvas.width, canvas.height); // destination rectangle
+  	img.style.display = 'none';
+	};
+	var hoveredColor = document.getElementById('hovered-color');
+	var selectedColor = document.getElementById('selected-color');
+
+
+	function pick(event, destination) {
+  	var x = event.layerX;
+  	var y = event.layerY;
+ 	 var pixel = ctx.getImageData(x, y, 1, 1);
+  	var data = pixel.data;
+
+		const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3] / 255})`;
+		destination.style.background = rgba;
+		destination.textContent = rgba;
+
+		return rgba;
+	}
+
+	canvas.addEventListener('mousemove', function(event) {
+		pick(event, hoveredColor);
+	});
+	canvas.addEventListener('click', function(event) {
+		pick(event, selectedColor);
+	});
+}
+function getcolor1(imgID1){
+	var img = new Image();
+	img.crossOrigin = 'anonymous';
+	img.src = imgID1;
+	var canvas = document.getElementById('canvas1');
+	var ctx = canvas.getContext('2d');
+	img.onload = function() {
+  	ctx.drawImage(img, 0, 0, img.width,    img.height,     // source rectangle
+                   0, 0, canvas.width, canvas.height); // destination rectangle
+  	img.style.display = 'none';
+	};
+	var hoveredColor = document.getElementById('hovered-color1');
+	var selectedColor = document.getElementById('selected-color1');
+
+
+	function pick(event, destination) {
+  	var x = event.layerX;
+  	var y = event.layerY;
+ 	 var pixel = ctx.getImageData(x, y, 1, 1);
+  	var data = pixel.data;
+
+		const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3] / 255})`;
+		destination.style.background = rgba;
+		destination.textContent = rgba;
+
+		return rgba;
+	}
+
+	canvas.addEventListener('mousemove', function(event) {
+		pick(event, hoveredColor);
+	});
+	canvas.addEventListener('click', function(event) {
+		pick(event, selectedColor);
+	});
+}
+function getcolor2(imgID2){
+	var img = new Image();
+	img.crossOrigin = 'anonymous';
+	img.src = imgID2;
+	var canvas = document.getElementById('canvas2');
+	var ctx = canvas.getContext('2d');
+	img.onload = function() {
+  	ctx.drawImage(img, 0, 0, img.width,    img.height,
+                   0, 0, canvas.width, canvas.height);
+  	img.style.display = 'none';
+	};
+	var hoveredColor = document.getElementById('hovered-color2');
+	var selectedColor = document.getElementById('selected-color2');
+
+
+	function pick(event, destination) {
+  	var x = event.layerX;
+  	var y = event.layerY;
+ 	 var pixel = ctx.getImageData(x, y, 1, 1);
+  	var data = pixel.data;
+
+		const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3] / 255})`;
+		destination.style.background = rgba;
+		destination.textContent = rgba;
+
+		return rgba;
+	}
+
+	canvas.addEventListener('mousemove', function(event) {
+		pick(event, hoveredColor);
+	});
+	canvas.addEventListener('click', function(event) {
+		pick(event, selectedColor);
+	});
+}
+function getResult(){
+
+let loc = document.getElementById('selected-color').textContent;
+var arr = loc.split(",");
+var g = arr[1];
+
+let loc1 = document.getElementById('selected-color1').textContent;
+var arr1 = loc1.split(",");
+var g1 = arr1[1];
+
+let loc2 = document.getElementById('selected-color2').textContent;
+var arr2 = loc2.split(",");
+var g2 = arr2[1];
+if (g != 0){
+document.getElementById('NTC').innerHTML = 'Your ntc G value is:' + g;
+document.getElementById('sample').innerHTML = 'Your sample G value is:' + g1;
+document.getElementById('pcontrol').innerHTML = 'You positive control G value is:' + g2;
+}
+
+if(g > 100){
+document.getElementById('result').innerHTML = 'Your result is: invalid';
+} else if (g2 < 90){
+document.getElementById('result').innerHTML = 'Your result is: inconclusive';
+} else if (g1/g > 1.44){
+	if(g < 100 && g1 < 100){
+		document.getElementById('result').innerHTML = 'Your result is: negative';
+	} else {
+		document.getElementById('result').innerHTML = 'Your result is: positive';
+		}
+} else {
+document.getElementById('result').innerHTML = 'Your result is: negative';
+}
+}
+var imageLoader = document.getElementById('imageLoader');
+    imageLoader.addEventListener('change', handleImage, false);
+var canvas = document.getElementById('imageCanvas');
+var ctx = canvas.getContext('2d');
+
+
+function handleImage(e){
+    var reader = new FileReader();
+    reader.onload = function(event){
+        var img = new Image();
+        img.onload = function(){
+        ctx.drawImage(img, 0, 0, img.width,    img.height,
+                   0, 0, canvas.width, canvas.height);
+        }
+        img.src = event.target.result;
+        getcolor(img.src);
+		getcolor1(img.src);
+		getcolor2(img.src);
+    }
+    reader.readAsDataURL(e.target.files[0]);
+}
+
+
+</script>
+</html>
